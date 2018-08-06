@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', 'MicropostsController@index');
+Route::get('/', function () {
+    return view('welcome');
+});
 
 //ユーザ登録のルーティング
 Route::get('signup','Auth\RegisterController@showRegistrationForm')->name('signup.get');

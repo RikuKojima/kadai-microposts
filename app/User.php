@@ -78,6 +78,13 @@ class User extends Authenticatable
     } else {
         // 未フォローであれば何もしない
         return false;
+        }
     }
+    
+    public function feed_microposts() {
+        //userがフォローしているuserのidの取得をする
+        $follow_user_id = $this->followings()->pluck('users.id')->toArray();
+        $follow_user_ids[] = $this->id;
+        return Micropost::whereIn('user_id', $follow_user_ids);
     }
 }

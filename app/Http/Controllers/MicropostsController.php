@@ -10,20 +10,16 @@ class MicropostsController extends Controller
     public function index()
     {
         $data = [];
-        //最初はここに飛ばされる。ログインしてたら中身に。してなければwelcomeに
         if (\Auth::check()) {
-            $user = \Auth::user(); //ユーザー情報
-            $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
-            
+            $user = \Auth::user();
+            $microposts = $user->feed_microposts()->orderBy('created_at', 'desc')->paginate(10);
+
             $data = [
                 'user' => $user,
                 'microposts' => $microposts,
             ];
-            $data += $this->counts($user);
-            return view('users.show', $data);
-        }else {
-            return view('welcome');
         }
+        return view('welcome', $data);
     }
     
         public function store(Request $request)

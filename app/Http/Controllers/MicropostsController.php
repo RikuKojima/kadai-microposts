@@ -18,8 +18,10 @@ class MicropostsController extends Controller
                 'user' => $user,
                 'microposts' => $microposts,
             ];
-        }
         return view('welcome', $data);
+        }else{
+            return view('welcome');
+        }
     }
     
         public function store(Request $request)

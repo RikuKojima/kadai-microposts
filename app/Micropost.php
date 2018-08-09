@@ -12,4 +12,9 @@ class Micropost extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    //お気に入りにされているかどうか
+    public function be_liked() {
+        return $this->belongsToMany(User::class,'user_like','like_id','user_id')->withTimestamps();
+    }
 }

@@ -51,7 +51,7 @@ class UsersController extends Controller
     
     public function followers($id){
         $user = user::find($id);
-        $followings = $user->followers()->paginate(10);
+        $followers = $user->followers()->paginate(10);
         
         $data = [
             'user' => $user,
@@ -62,5 +62,18 @@ class UsersController extends Controller
         return view('users.followers',$data);
     }
     
+    //お気に入りしているツイートを表示
     
+    public function like($id){
+        //このidはユーザののid
+        $user = User::find($id);
+        $fav_posts = $user->like()->paginate(10);
+        
+        $data = [
+            'user' => $user,
+            'fav_posts' => $fav_posts,
+            ];
+        $data += $this->counts($user);
+        return view('users.like', $data);
+    }
 }

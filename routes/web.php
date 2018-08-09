@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'MicropostsController@index');
 
 //ユーザ登録のルーティング
 Route::get('signup','Auth\RegisterController@showRegistrationForm')->name('signup.get');
@@ -32,6 +30,12 @@ Route::group(['middleware' => ['auth']], function() {
         Route::delete('unfollow', 'UserFollowController@destroy')->name('user.unfollow');
         Route::get('followings', 'UsersController@followings')->name('users.followings');
         Route::get('followers', 'UsersController@followers')->name('users.followers');
+        //お気に入り機能のルート
+        Route::post('add_like','UserLikeController@store')->name('user.add_like');
+        Route::delete('rm_like','UserLikeController@destroy')->name('user.rm_like');
+        Route::get('like','UsersController@like')->name('users.like');
+        //そのツイートがお気に入りされているユーザーの数、表示させる必要ある？
+        
     });
     
     Route::resource('microposts','MicropostsController',['only' => ['store','destroy']]);

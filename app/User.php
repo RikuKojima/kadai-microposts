@@ -87,4 +87,34 @@ class User extends Authenticatable
         $follow_user_ids[] = $this->id;
         return Micropost::whereIn('user_id', $follow_user_ids);
     }
+    
+    // ユーザーがlikeしている投稿のid
+    public function like() {
+        return $this->belongsToMany(Micropost::class,'user_like','user_id','like_id')->withTimestamps();
+    }
+    
+    //すでにその投稿をlikeしているかどうかの判定
+    public function is_like($id) {
+        return $this->like()->where('like_id',$id)->exists();
+    }
+    
+    //お気に入りに追加
+    public function add_like($id) {
+        //すでにお気に入りしたか
+        if($this->is_like($id)) {
+            return false;
+        }else{
+            $this->like()->attach($id);
+            return true;
+        }
+    }
+    
+    public function rm_like($id) {
+        if($this->is_like($id)) {
+            $this->like()->detach($id);
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
